@@ -13,7 +13,7 @@ N = C.N
 DRAFT = os.path.join(MS, "draft", "02_manuscript_jms.md")
 _zf = os.path.join(OUT, "zenodo_doi.txt"); ZENODO = open(_zf).read().strip() if os.path.exists(_zf) else "[ZENODO DOI]"
 _gf = os.path.join(OUT, "github_url.txt"); GITHUB = open(_gf).read().strip() if os.path.exists(_gf) else "[GITHUB URL]"
-TITLE = "Atypical-cell reports, not higher-grade findings, shape the district map of abnormal cervical screening results in Korea"
+TITLE = "Atypical-cell results dominate the district map of abnormal cervical screening results in Korea"
 KEYWORDS = "Papanicolaou test; atypical squamous cells of the cervix; uterine cervical neoplasms; early detection of cancer; quality control; spatial analysis; Republic of Korea"
 assert ":" not in TITLE and "HPV" not in TITLE and "Pap " not in TITLE and TITLE != C.TITLE
 AI_USE = ("The author used Claude (Anthropic) and ChatGPT (OpenAI) only for translation and English-language editing of the manuscript. "
@@ -54,6 +54,28 @@ def declarations(J, lvl=2):
                  ("Declaration of conflicting interest", COI), ("Funding", FUNDING), ("Data availability", data_statement())]:
         J.head(h, lvl); J.para(t)
 
+LK = N["lik"]
+REPL = [   # review(2026-11-18) 반영: JMS 원고에서만 바꾸는 문장(content_cxab 원본 보존), 각각 정확히 1회 적용
+ ("according to the STROBE statement [@vonelm2007strengthening] (STROBE checklist). ", "according to the STROBE statement, with the checklist provided as a supplementary file [@vonelm2007strengthening]. "),
+ ("Women aged 20-29 years became eligible in 2016 and had the highest abnormal rates (Figure 1). ",
+  "Women aged 20-29 years became eligible in 2016. The published tables do not define the 'other' category, which was larger than the outcome in every year before 2018 and fell sharply in 2018; it was not part of the outcome, and before 2018 the program had no separate category for suspected precancerous lesion (Table S4). "),
+ ("the national abnormal rate by year and 14 age groups (20-24 to 85 years or older) was applied",
+  "the national abnormal rate by year and age group (12 groups from 30-34 years in 2011-2015 and 14 groups from 20-24 years from 2016, up to 85 years or older) was applied"),
+ ("(higher-grade results, 2018-2024).",
+  "(higher-grade results, 2018-2024). Here higher-grade denotes the program categories suspected precancerous lesion and suspected cancer; the published tables do not map them to Bethesda low-grade or high-grade lesions, so the district ratio of atypical to higher-grade results is not directly comparable with laboratory benchmarks."),
+ ("were filled by within-district interpolation, then the district mean (Table S1).", "were filled by within-district interpolation, then the district mean and then the national year mean (Table S1)."),
+ (f"({N['waic_nb']:,.1f} vs {N['waic_pois']:,.1f})", f"({LK['nbinomial']['WAIC']:,.1f} vs {LK['poisson']['WAIC']:,.1f}; Table S2)"),
+ ("Abnormal rates were highest at 20-24 years", "Over 2016-2024, abnormal rates were highest at 20-24 years"),
+ ("For the 2013 release the correlations were ", "Both comparisons used district SIRs for 2018-2024 for higher-grade results and for 2011-2024 for atypical cells; for the 2013 release the correlations were "),
+ ("; the atypical share was ", "; the variance of the district atypical share was "),
+ (" times more dispersed than binomial variation (", " times that expected under binomial variation ("),
+ ("For atypical cells only, all 3 remained credible;", "For atypical cells only, all 3 remained credible (physical activity with a lower limit of 1.000 after rounding);"),
+]
+def apply_repl(p, used):
+    for i, (a, b) in enumerate(REPL):
+        if a in p: p = p.replace(a, b); used[i] += 1
+    return p
+
 def tbl(t): return (re.sub(r"^TABLE (\d)\.", r"Table \1.", t[0]),) + tuple(t[1:])
 
 def build(counts=None):
@@ -72,25 +94,26 @@ def build(counts=None):
     J.page_break(); J.counting = True
     J.head("Introduction", 1)
     for p in D["Introduction"]: J.para(pandoc_cites(p), indent=True)
+    used = [0] * len(REPL)
     J.head("Methods", 1)
     for x in C.METHODS:
         J.head(x[0], 2)
-        for p in x[1:]: J.para(pandoc_cites(p), indent=True)
+        for p in x[1:]: J.para(pandoc_cites(apply_repl(p, used)), indent=True)
     J.head("Results", 1)
     s4 = f"the 'other' category fell from {N['other_2017_2018'][0]:,} to {N['other_2017_2018'][1]:,}"; hit = 0
     for x in C.RESULTS:
         J.head(x[0], 2)
         for p in x[1:]:
             if s4 in p: p = p.replace(s4, s4 + " (national counts by category and year in Table S4)", 1); hit += 1
-            J.para(pandoc_cites(p), indent=True)
-    assert hit == 1
+            J.para(pandoc_cites(apply_repl(p, used)), indent=True)
+    assert hit == 1 and used == [1] * len(REPL), used
     J.head("Discussion", 1); lvl = 2
     for p in D["Discussion"]:
         if p.startswith("### "):
             h = p[4:].strip(); J.head(h, 1 if h == "Conclusions" else 2); continue
         J.para(pandoc_cites(p), indent=True)
     J.counting = False
-    J.head("Acknowledgements", 1); J.para(f"None. {AI_USE}")
+    J.head("Acknowledgements", 1); J.para("None.")
     J.head("Author contributions", 1); J.para(CREDIT)
     J.head("Statements and Declarations", 1); declarations(J)
     assert sorted(J.cites) == B0.KEYS, (set(J.cites) ^ set(B0.KEYS))

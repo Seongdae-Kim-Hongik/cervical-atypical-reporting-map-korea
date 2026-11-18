@@ -2,7 +2,7 @@
 
 Analysis code for the manuscript
 
-> Kim S. *Atypical-cell reports, not higher-grade findings, shape the district map of abnormal cervical screening results in Korea.* Submitted to *Journal of Medical Screening*.
+> Kim S. *Atypical-cell results dominate the district map of abnormal cervical screening results in Korea.* Submitted to *Journal of Medical Screening*.
 
 Archived version: Zenodo, https://doi.org/10.5281/zenodo.24332247 (v1.0.0).
 
