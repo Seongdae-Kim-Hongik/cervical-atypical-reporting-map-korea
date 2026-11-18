@@ -1,0 +1,197 @@
+{
+ "tag": "CXAB",
+ "outcome_column": "chk__cxab_cases",
+ "outcome_label_en": "Women with an abnormal cervical cytology result (atypical squamous/glandular cells, suspected precancerous lesion [category from 2018] or suspected cervical cancer) at the National Cancer Screening Program Pap test (NHIS, KOSIS DT_35007_N019, annual, place of residence)",
+ "disease_en": "Abnormal cervical cytology at national screening",
+ "disease_ko": "자궁경부암 검진 세포 이상 판정",
+ "forced": [
+  "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구",
+  "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)",
+  "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)",
+  "eloc__DT_1YL20891__재정자주도(세입과목개편전)",
+  "ext__pop80_share"
+ ],
+ "negative_controls": [
+  "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)",
+  "eloc__DT_1YL20331__지수__계",
+  "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)"
+ ],
+ "offset_E_column": "E_std",
+ "offset_E_file": "CXAB_Estd3.csv",
+ "offset_E_label": "age-standardised E (14 five-year bands 20-24 to 85+, national cervical-cytology abnormality rates by age DT_35007_N020; district examinee age structure approximated from resident female population x national age-specific screening coverage, district examinee totals observed)",
+ "graph": "queen 577",
+ "sensitivity_only_extra": [
+  "ext__outside_care_share"
+ ],
+ "sets": {
+  "S1_narrative_full": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)",
+   "ext__foreign_residents_per1000",
+   "kchs__DT_H_SM__SR",
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__genhosp_per100k",
+   "ext__basic_livelihood_rate",
+   "ext__tertiary_educated_share",
+   "kchs__DT_H_EX_WALK__SR",
+   "kchs__DT_H_EX_PHY__SR",
+   "fac__total"
+  ],
+  "S2_hpv_exposure": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)",
+   "ext__foreign_residents_per1000",
+   "kchs__DT_H_SM__SR"
+  ],
+  "S3_screening_reading": [
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__genhosp_per100k"
+  ],
+  "S4_activity": [
+   "kchs__DT_H_EX_WALK__SR",
+   "kchs__DT_H_EX_PHY__SR",
+   "fac__total"
+  ],
+  "S5_core": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "kchs__DT_H_SM__SR",
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__basic_livelihood_rate",
+   "kchs__DT_H_EX_WALK__SR"
+  ]
+ },
+ "transform": {
+  "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구": "share_of_pop(도시지역인구÷population(마스터))",
+  "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)": "none",
+  "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)": "none",
+  "eloc__DT_1YL20891__재정자주도(세입과목개편전)": "none",
+  "ext__pop80_share": "none",
+  "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)": "none",
+  "eloc__DT_1YL20331__지수__계": "none",
+  "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)": "none",
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "none",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "none",
+  "ext__foreign_residents_per1000": "log1p",
+  "kchs__DT_H_SM__SR": "none",
+  "ext__cx_screening_uptake": "none",
+  "ext__screening_clinic_share": "none",
+  "ext__genhosp_per100k": "log1p",
+  "ext__basic_livelihood_rate": "none",
+  "ext__tertiary_educated_share": "none",
+  "ext__outside_care_share": "none",
+  "kchs__DT_H_EX_WALK__SR": "none",
+  "kchs__DT_H_EX_PHY__SR": "none",
+  "fac__total": "per100k"
+ },
+ "expected_direction": {
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "+",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "+",
+  "ext__foreign_residents_per1000": "+",
+  "kchs__DT_H_SM__SR": "+",
+  "ext__cx_screening_uptake": "-",
+  "ext__screening_clinic_share": "+",
+  "ext__genhosp_per100k": "-",
+  "ext__basic_livelihood_rate": "+",
+  "ext__tertiary_educated_share": "-",
+  "kchs__DT_H_EX_WALK__SR": "-",
+  "kchs__DT_H_EX_PHY__SR": "-",
+  "fac__total": "-"
+ },
+ "evidence": {
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "(문헌 단계에서 PMID 확인)",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "(문헌 단계에서 PMID 확인)",
+  "ext__foreign_residents_per1000": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_SM__SR": "(문헌 단계에서 PMID 확인)",
+  "ext__cx_screening_uptake": "(문헌 단계에서 PMID 확인)",
+  "ext__screening_clinic_share": "(문헌 단계에서 PMID 확인)",
+  "ext__genhosp_per100k": "(문헌 단계에서 PMID 확인)",
+  "ext__basic_livelihood_rate": "(문헌 단계에서 PMID 확인)",
+  "ext__tertiary_educated_share": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_EX_WALK__SR": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_EX_PHY__SR": "(문헌 단계에서 PMID 확인)",
+  "fac__total": "(문헌 단계에서 PMID 확인)"
+ },
+ "rules": {
+  "likelihood": "forced-only 모형 WAIC 낮은 쪽(Poisson/NB)",
+  "set_choice": "WAIC 최소, 4 이내면 변수 적은 세트",
+  "credible": "95% CrI 1 제외",
+  "vif_drop": 10,
+  "multiverse_specs": 200,
+  "main_model_note": "Principal model = S1_narrative_full (12 district characteristics + 5 forced controls). VIF>10 retained and reported.",
+  "windows": {
+   "W1_2011-17": [
+    2011,
+    2017
+   ],
+   "W2_2018-24": [
+    2018,
+    2024
+   ]
+  },
+  "windows_note": "2018 '자궁경부암 전구단계 의심' 범주 신설과 '기타' 재분류(15.6만→2.9만) → 단절 전·후 창만 사용",
+  "years": [
+   2011,
+   2024
+  ]
+ },
+ "note": "Outcome: women with an abnormal cervical cytology result (atypical cells, suspected precancerous lesion from 2018, suspected cancer) among women screened in the National Cancer Screening Program. Covariates: HPV exposure markers (crude divorce rate, single-person households, foreign residents), current smoking, screening coverage, reading setting (clinic share among screening institutions, general hospitals), deprivation (basic livelihood security recipients, tertiary education) and physical activity (walking, moderate physical activity, public sports facilities); five forced controls; negative control exposures hit-and-run collisions, traffic-culture index and fires; comparison outcomes transport-injury deaths and gastric cancer patients.",
+ "extra_columns": {
+  "chk__cxab_cases": [
+   "CXAB_Estd3.csv",
+   "cases"
+  ],
+  "chk__cxab_examinees": [
+   "CXAB_Estd3.csv",
+   "examinees"
+  ],
+  "ext__pop80_share": [
+   "CXAB_Estd3.csv",
+   "pop80_share_raw"
+  ],
+  "ext__foreign_residents_per1000": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "foreign_residents_per1000"
+  ],
+  "ext__cx_screening_uptake": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "cx_screening_uptake"
+  ],
+  "ext__screening_clinic_share": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "screening_clinic_share"
+  ],
+  "ext__genhosp_per100k": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "genhosp_per100k"
+  ],
+  "ext__basic_livelihood_rate": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "basic_livelihood_rate"
+  ],
+  "ext__tertiary_educated_share": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "tertiary_educated_share"
+  ],
+  "ext__outside_care_share": [
+   "EXT_canonical_pool_261106.csv",
+   "outside_care_share"
+  ]
+ },
+ "offset": "chk__cxab_examinees",
+ "outcome_note": "N019 비정형 세포 이상+전구단계 의심(2018~)+암 의심, 분모 = 판정 수검자(N019 계), 2011-2024 229곳 전부(세종 2011=연기군), KOSIS '-'=0(시군구 합=전국 계), 부산 B112/B113 이름 뒤바뀜 정정((C1, C1_NM) 결합, 99X2)",
+ "offset_column": "chk__cxab_examinees",
+ "exclude_years": [],
+ "offset_E_sensitivity_column": "E_pop",
+ "offset_E_label_sensitivity": "female-population denominator E (screening-selection sensitivity)",
+ "population_override": [
+  {
+   "year": 2023,
+   "fbd_region": "경상남도창원시",
+   "population": 1009038,
+   "source": "KOSIS DT_1YL20651E 2023 통합창원시 계; FBD_DATA_ZIP/2023.csv 창원 블록이 2022값 복사(유방암 11/4 population_final_audit)"
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+ "tag": "CXHG",
+ "outcome_column": "chk__cxhg_cases",
+ "outcome_label_en": "Cervical cytology component outcome: suspected precancerous lesion or suspected cancer, 2018-2024 (precancer category introduced in 2018)",
+ "disease_en": "Abnormal cervical cytology at national screening",
+ "disease_ko": "자궁경부암 검진 세포 이상 판정",
+ "forced": [
+  "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구",
+  "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)",
+  "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)",
+  "eloc__DT_1YL20891__재정자주도(세입과목개편전)",
+  "ext__pop80_share"
+ ],
+ "negative_controls": [
+  "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)",
+  "eloc__DT_1YL20331__지수__계",
+  "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)"
+ ],
+ "offset_E_column": "E_std_HG",
+ "offset_E_file": "CXAB_Estd3.csv",
+ "offset_E_label": "age-standardised E (14 five-year bands 20-24 to 85+, national cervical-cytology abnormality rates by age DT_35007_N020; district examinee age structure approximated from resident female population x national age-specific screening coverage, district examinee totals observed)",
+ "graph": "593-edge contact graph (BRCA 2026-11-04 graph_audit), ST_GRAPH=04_분석/CXHG/graph_593.graph",
+ "sensitivity_only_extra": [
+  "ext__outside_care_share"
+ ],
+ "version": "std3 (체육 경로 v1, 13 §3 항목 0: 검진 판정 종속변수 = 감염병 신고 아님 → 체육 세트 먼저. 자궁경부 세포 판정 기전 풀 + 신체활동 3지표)",
+ "fixed_on": "2026-11-13 (공변량 모형 적합 전 고정. 체육 경로 v1: 신체활동 지표 하나라도 credible이면 계속, 전부 null이면 v2 = 판정 기전 세트로 체인 전체 재실행)",
+ "sets": {
+  "S1_narrative_full": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)",
+   "ext__foreign_residents_per1000",
+   "kchs__DT_H_SM__SR",
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__genhosp_per100k",
+   "ext__basic_livelihood_rate",
+   "ext__tertiary_educated_share",
+   "kchs__DT_H_EX_WALK__SR",
+   "kchs__DT_H_EX_PHY__SR",
+   "fac__total"
+  ],
+  "S2_hpv_exposure": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)",
+   "ext__foreign_residents_per1000",
+   "kchs__DT_H_SM__SR"
+  ],
+  "S3_screening_reading": [
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__genhosp_per100k"
+  ],
+  "S4_activity": [
+   "kchs__DT_H_EX_WALK__SR",
+   "kchs__DT_H_EX_PHY__SR",
+   "fac__total"
+  ],
+  "S5_core": [
+   "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "kchs__DT_H_SM__SR",
+   "ext__cx_screening_uptake",
+   "ext__screening_clinic_share",
+   "ext__basic_livelihood_rate",
+   "kchs__DT_H_EX_WALK__SR"
+  ]
+ },
+ "transform": {
+  "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구": "share_of_pop(도시지역인구÷population(마스터))",
+  "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)": "none",
+  "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)": "none",
+  "eloc__DT_1YL20891__재정자주도(세입과목개편전)": "none",
+  "ext__pop80_share": "none",
+  "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)": "none",
+  "eloc__DT_1YL20331__지수__계": "none",
+  "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)": "none",
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "none",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "none",
+  "ext__foreign_residents_per1000": "log1p",
+  "kchs__DT_H_SM__SR": "none",
+  "ext__cx_screening_uptake": "none",
+  "ext__screening_clinic_share": "none",
+  "ext__genhosp_per100k": "log1p",
+  "ext__basic_livelihood_rate": "none",
+  "ext__tertiary_educated_share": "none",
+  "ext__outside_care_share": "none",
+  "kchs__DT_H_EX_WALK__SR": "none",
+  "kchs__DT_H_EX_PHY__SR": "none",
+  "fac__total": "per100k"
+ },
+ "expected_direction": {
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "+ (조이혼율: 성 파트너 변화가 많은 인구 구성의 지역 표지, HPV 감염·지속 위험)",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "+ (1인 가구 비율: 미혼·비동거 성인 집중, 성 네트워크가 넓은 도시 인구 구성 → HPV 노출)",
+  "ext__foreign_residents_per1000": "+ (인구 천명당 외국인: 혼인 이주 여성 등 HPV 유병률이 높은 출신 지역 구성, 이전 검진 이력 적음)",
+  "kchs__DT_H_SM__SR": "+ (현재흡연율: 흡연은 HPV 지속·자궁경부 상피내 종양의 보조 요인)",
+  "ext__cx_screening_uptake": "- (자궁경부암 검진 수검률: 수검률이 높으면 저위험·반복 수검자 비중이 커져 수검자 중 이상 판정 비율이 낮음; 검진 선택 축)",
+  "ext__screening_clinic_share": "+ (검진기관 중 의원 비율: 의원 채취 검체는 외부 수탁 세포병리 판독, 판독 관행 차이로 비정형 판정 증가; 판독 기관 축)",
+  "ext__genhosp_per100k": "- (종합병원 밀도: 병리과 자체 판독·정도관리 → 비정형 판정 감소; 판독 기관 축)",
+  "ext__basic_livelihood_rate": "+ (기초생활 수급률: 불규칙 수검·이전 검사 부재로 첫 검진 비중이 높고 HPV 지속 위험)",
+  "ext__tertiary_educated_share": "- (대졸 이상 비율: 정기 검진·HPV 예방접종(성인 자비 접종)과 연관)",
+  "kchs__DT_H_EX_WALK__SR": "- (걷기 실천율: 신체활동과 면역 기능, HPV 지속 감소 가설; 건강 행동 군집으로 정기 검진·저위험)",
+  "kchs__DT_H_EX_PHY__SR": "- (중강도 이상 신체활동: 같은 기전)",
+  "fac__total": "- (공공체육시설: 지역 건강 인프라, 건강 행동 환경)"
+ },
+ "evidence": {
+  "eloc__INH_1B8000I_01__조이혼율(천명당)": "(문헌 단계에서 PMID 확인)",
+  "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)": "(문헌 단계에서 PMID 확인)",
+  "ext__foreign_residents_per1000": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_SM__SR": "(문헌 단계에서 PMID 확인)",
+  "ext__cx_screening_uptake": "(문헌 단계에서 PMID 확인)",
+  "ext__screening_clinic_share": "(문헌 단계에서 PMID 확인)",
+  "ext__genhosp_per100k": "(문헌 단계에서 PMID 확인)",
+  "ext__basic_livelihood_rate": "(문헌 단계에서 PMID 확인)",
+  "ext__tertiary_educated_share": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_EX_WALK__SR": "(문헌 단계에서 PMID 확인)",
+  "kchs__DT_H_EX_PHY__SR": "(문헌 단계에서 PMID 확인)",
+  "fac__total": "(문헌 단계에서 PMID 확인)"
+ },
+ "rules": {
+  "likelihood": "forced-only 모형 WAIC 낮은 쪽(Poisson/NB)",
+  "set_choice": "WAIC 최소, 4 이내면 변수 적은 세트",
+  "credible": "95% CrI 1 제외",
+  "vif_drop": 10,
+  "multiverse_specs": 200,
+  "main_model_note": "주모형 = S1_narrative_full(가설 12 = 판정 기전 9 + 신체활동 3, 강제통제 5). 세트를 다시 바꾸지 않음. VIF>10 유지·보고.",
+  "windows_note": "2018 '자궁경부암 전구단계 의심' 범주 신설과 '기타' 재분류(15.6만→2.9만) → 단절 전·후 창만 사용",
+  "years": [
+   2011,
+   2024
+  ],
+  "windows": {
+   "W2_2018-24": [
+    2018,
+    2024
+   ]
+  }
+ },
+ "note": "CXAB = 국가 자궁경부암 검진(20세 이상 여자 격년 세포검사, 20-29세는 2016 편입) 세포 이상 판정 인원/수검자. 결과(진료·사망)가 아니라 검진 판정 단계를 보는 호. 질문: 같은 검진을 받고도 다른 이상 판정 비율이 HPV 노출의 지리인가, 판독 기관의 지리인가. 50호 BRRC(유방 판정유보, 같은 원천, ρ0.42)는 치밀 유방·판독 관행 질문이라 다르다. 포함: HPV 노출 표지(조이혼율·1인 가구·외국인 주민), 보조 요인(흡연), 검진 선택(수검률), 판독 기관(검진기관 중 의원 비율·종합병원), 박탈·교육. 제외(시군구 연도 지표 없음 → 한계): 개인 HPV 검사·예방접종 이력, 판독 기관(세포병리 수탁기관) 식별자, 판독량·정도관리 지표. 사전지정 민감도: 검진 기관 단위(시도×연도 iid = 88g C4), 2011-23 절단(t23), 2011-17/2018-24 창(2018 '전구단계 의심' 범주 신설·'기타' 재분류), 구성 결과(비정형만 CXASC·전구+암 의심 CXHG), 조율 E(연령 표준화 없음, s8), E_pop(여자 인구 분모, 81 S10), 80+ 강제통제 없음(s2), queen 577 그래프(s577). 비교 결과(NCO) = BRRC 대신 위암 진료(GCA)·운수사고 사망(TRANS). 사후 타당도: 자궁경부암 발생률(암등록, 2013·2018)과 SIR 상관.",
+ "extra_columns": {
+  "chk__cxab_cases": [
+   "CXAB_Estd3.csv",
+   "cases"
+  ],
+  "chk__cxab_examinees": [
+   "CXAB_Estd3.csv",
+   "examinees"
+  ],
+  "ext__pop80_share": [
+   "CXAB_Estd3.csv",
+   "pop80_share_raw"
+  ],
+  "ext__foreign_residents_per1000": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "foreign_residents_per1000"
+  ],
+  "ext__cx_screening_uptake": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "cx_screening_uptake"
+  ],
+  "ext__screening_clinic_share": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "screening_clinic_share"
+  ],
+  "ext__genhosp_per100k": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "genhosp_per100k"
+  ],
+  "ext__basic_livelihood_rate": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "basic_livelihood_rate"
+  ],
+  "ext__tertiary_educated_share": [
+   "EXT_canonical_pool_CXAB_261113.csv",
+   "tertiary_educated_share"
+  ],
+  "ext__outside_care_share": [
+   "EXT_canonical_pool_261106.csv",
+   "outside_care_share"
+  ],
+  "chk__cxhg_cases": [
+   "CXAB_Estd3.csv",
+   "cases_HG"
+  ]
+ },
+ "offset": "chk__cxab_examinees",
+ "outcome_note": "N019 비정형 세포 이상+전구단계 의심(2018~)+암 의심, 분모 = 판정 수검자(N019 계), 2011-2024 229곳 전부(세종 2011=연기군), KOSIS '-'=0(시군구 합=전국 계), 부산 B112/B113 이름 뒤바뀜 정정((C1, C1_NM) 결합, 99X2)",
+ "offset_column": "chk__cxab_examinees",
+ "exclude_years": [
+  2011,
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017
+ ],
+ "offset_E_sensitivity_column": null,
+ "offset_E_label_sensitivity": "female-population denominator E (screening-selection sensitivity)",
+ "population_override": [
+  {
+   "year": 2023,
+   "fbd_region": "경상남도창원시",
+   "population": 1009038,
+   "source": "KOSIS DT_1YL20651E 2023 통합창원시 계; FBD_DATA_ZIP/2023.csv 창원 블록이 2022값 복사(유방암 11/4 population_final_audit)"
+  }
+ ]
+}

@@ -1,0 +1,430 @@
+{
+ "tag": "CXAB",
+ "outcome_column": "chk__cxab_cases",
+ "outcome_label_en": "Women with an abnormal cervical cytology result (atypical squamous/glandular cells, suspected precancerous lesion [category from 2018] or suspected cervical cancer) at the National Cancer Screening Program Pap test (NHIS, KOSIS DT_35007_N019, annual, place of residence)",
+ "disease_ko": "자궁경부암 검진 세포 이상 판정",
+ "disease_en": "Abnormal cervical cytology at national screening",
+ "forced": [
+  "urban_population_share",
+  "physicians_per_1000",
+  "sex_ratio",
+  "fiscal_independence",
+  "pop80_share"
+ ],
+ "candidates": [
+  "crude_divorce_rate",
+  "single_person_household_share",
+  "foreign_residents_per_1000",
+  "current_smoking_rate",
+  "cervical_screening_uptake",
+  "screening_clinic_share",
+  "genhosp_per100k",
+  "basic_livelihood_rate",
+  "tertiary_educated_share",
+  "walking_practice_rate",
+  "moderate_pa_rate",
+  "public_sports_facilities_per_100k"
+ ],
+ "negative_controls": [
+  "hit_and_run_rate",
+  "traffic_culture_index",
+  "fires_per_10000"
+ ],
+ "sets": {
+  "S1_narrative_full": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k",
+   "basic_livelihood_rate",
+   "tertiary_educated_share",
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k"
+  ],
+  "S2_hpv_exposure": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate"
+  ],
+  "S3_screening_reading": [
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k"
+  ],
+  "S4_activity": [
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k"
+  ],
+  "S5_core": [
+   "crude_divorce_rate",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "basic_livelihood_rate",
+   "walking_practice_rate"
+  ],
+  "S1b_obesity_sensitivity": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k",
+   "basic_livelihood_rate",
+   "tertiary_educated_share",
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k",
+   "obesity_rate"
+  ]
+ },
+ "sensitivity_sets": [
+  "S1b_obesity_sensitivity"
+ ],
+ "sensitivity_only_vars": [
+  "obesity_rate",
+  "outside_care_share"
+ ],
+ "offset_column": "chk__cxab_examinees",
+ "offset_sensitivity": null,
+ "offset_fallback": null,
+ "exclude_years": [],
+ "vars": {
+  "urban_population_share": {
+   "key": "urban_population_share",
+   "column": "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구",
+   "transform": "pct_of_pop",
+   "label_en": "Urban-zone population share (%)",
+   "label_ko": "도시지역 인구 비율",
+   "expected_direction": "",
+   "role": "forced",
+   "raw_key": "eloc__DT_1YL20421E__1인당도시지역면적현황__도시지역인구"
+  },
+  "physicians_per_1000": {
+   "key": "physicians_per_1000",
+   "column": "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)",
+   "transform": "none",
+   "label_en": "Physicians per 1000",
+   "label_ko": "인구 천명당 의사 수",
+   "expected_direction": "",
+   "role": "forced",
+   "raw_key": "eloc__DT_1YL20981__인구천명당의료기관종사의사수＜br＞(A÷B×1000)"
+  },
+  "sex_ratio": {
+   "key": "sex_ratio",
+   "column": "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)",
+   "transform": "none",
+   "label_en": "Sex ratio (men per 100 women)",
+   "label_ko": "남녀성비",
+   "expected_direction": "",
+   "role": "forced",
+   "raw_key": "eloc__DT_1YL20701__남녀성비＜br＞(A÷B×100)"
+  },
+  "fiscal_independence": {
+   "key": "fiscal_independence",
+   "column": "eloc__DT_1YL20891__재정자주도(세입과목개편전)",
+   "transform": "none",
+   "label_en": "Fiscal independence (%)",
+   "label_ko": "재정자주도",
+   "expected_direction": "",
+   "role": "forced",
+   "raw_key": "eloc__DT_1YL20891__재정자주도(세입과목개편전)"
+  },
+  "pop80_share": {
+   "key": "pop80_share",
+   "column": "ext__pop80_share",
+   "transform": "none",
+   "label_en": "Population aged 80+ share (%)",
+   "label_ko": "80세 이상 인구 비율",
+   "expected_direction": "",
+   "role": "forced",
+   "raw_key": "ext__pop80_share"
+  },
+  "crude_divorce_rate": {
+   "key": "crude_divorce_rate",
+   "column": "eloc__INH_1B8000I_01__조이혼율(천명당)",
+   "transform": "none",
+   "label_en": "Crude divorce rate (per 1000)",
+   "label_ko": "조이혼율",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "eloc__INH_1B8000I_01__조이혼율(천명당)"
+  },
+  "single_person_household_share": {
+   "key": "single_person_household_share",
+   "column": "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)",
+   "transform": "none",
+   "label_en": "Single-person household share (%)",
+   "label_ko": "1인가구비율",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "eloc__DT_1YL21161__1인가구비율＜br＞(A÷B×100)"
+  },
+  "foreign_residents_per_1000": {
+   "key": "foreign_residents_per_1000",
+   "column": "ext__foreign_residents_per1000",
+   "transform": "log1p",
+   "label_en": "Foreign residents per 1000 (log1p)",
+   "label_ko": "인구 천명당 외국인 주민",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "ext__foreign_residents_per1000"
+  },
+  "current_smoking_rate": {
+   "key": "current_smoking_rate",
+   "column": "kchs__DT_H_SM__SR",
+   "transform": "none",
+   "label_en": "Current smoking rate (SR %)",
+   "label_ko": "현재흡연율",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "kchs__DT_H_SM__SR"
+  },
+  "cervical_screening_uptake": {
+   "key": "cervical_screening_uptake",
+   "column": "ext__cx_screening_uptake",
+   "transform": "none",
+   "label_en": "Cervical screening uptake (%)",
+   "label_ko": "자궁경부암 검진 수검률",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "ext__cx_screening_uptake"
+  },
+  "screening_clinic_share": {
+   "key": "screening_clinic_share",
+   "column": "ext__screening_clinic_share",
+   "transform": "none",
+   "label_en": "Clinic share among screening institutions (%)",
+   "label_ko": "검진기관 중 의원 비율",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "ext__screening_clinic_share"
+  },
+  "genhosp_per100k": {
+   "key": "genhosp_per100k",
+   "column": "ext__genhosp_per100k",
+   "transform": "log1p",
+   "label_en": "General hospitals per 100k",
+   "label_ko": "종합병원 수(10만 명당)",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "ext__genhosp_per100k"
+  },
+  "basic_livelihood_rate": {
+   "key": "basic_livelihood_rate",
+   "column": "ext__basic_livelihood_rate",
+   "transform": "none",
+   "label_en": "Basic-livelihood security recipient rate (%)",
+   "label_ko": "국민기초생활보장 수급자 비율",
+   "expected_direction": "+",
+   "role": "candidate",
+   "raw_key": "ext__basic_livelihood_rate"
+  },
+  "tertiary_educated_share": {
+   "key": "tertiary_educated_share",
+   "column": "ext__tertiary_educated_share",
+   "transform": "none",
+   "label_en": "Tertiary-educated share (%)",
+   "label_ko": "고등교육 이수 비율",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "ext__tertiary_educated_share"
+  },
+  "walking_practice_rate": {
+   "key": "walking_practice_rate",
+   "column": "kchs__DT_H_EX_WALK__SR",
+   "transform": "none",
+   "label_en": "Walking practice rate (SR %)",
+   "label_ko": "걷기 실천율",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "kchs__DT_H_EX_WALK__SR"
+  },
+  "moderate_pa_rate": {
+   "key": "moderate_pa_rate",
+   "column": "kchs__DT_H_EX_PHY__SR",
+   "transform": "none",
+   "label_en": "Moderate-or-higher physical activity rate (SR %)",
+   "label_ko": "중강도 이상 신체활동 실천율",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "kchs__DT_H_EX_PHY__SR"
+  },
+  "public_sports_facilities_per_100k": {
+   "key": "public_sports_facilities_per_100k",
+   "column": "fac__total",
+   "transform": "per100k",
+   "label_en": "Public sports facilities per 100k",
+   "label_ko": "공공체육시설 수(10만 명당)",
+   "expected_direction": "-",
+   "role": "candidate",
+   "raw_key": "fac__total"
+  },
+  "obesity_rate": {
+   "key": "obesity_rate",
+   "column": "kchs__DT_H_OBE_OBE__SR",
+   "transform": "none",
+   "label_en": "Obesity rate (self-reported SR %)",
+   "label_ko": "비만율(자가보고)",
+   "expected_direction": "",
+   "role": "candidate_sensitivity",
+   "raw_key": "kchs__DT_H_OBE_OBE__SR"
+  },
+  "outside_care_share": {
+   "key": "outside_care_share",
+   "column": "ext__outside_care_share",
+   "transform": "none",
+   "label_en": "Out-of-district outpatient share (%)",
+   "label_ko": "관외 외래 진료 비율",
+   "expected_direction": "",
+   "role": "candidate_sensitivity",
+   "raw_key": "ext__outside_care_share"
+  },
+  "hit_and_run_rate": {
+   "key": "hit_and_run_rate",
+   "column": "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)",
+   "transform": "none",
+   "label_en": "Hit-and-run traffic accident rate (%)",
+   "label_ko": "뺑소니 교통사고율",
+   "expected_direction": "",
+   "role": "negative",
+   "raw_key": "eloc__DT_1YL13901__뺑소니교통사고율＜br＞(A÷B×100)"
+  },
+  "traffic_culture_index": {
+   "key": "traffic_culture_index",
+   "column": "eloc__DT_1YL20331__지수__계",
+   "transform": "none",
+   "label_en": "Traffic culture index",
+   "label_ko": "교통문화지수",
+   "expected_direction": "",
+   "role": "negative",
+   "raw_key": "eloc__DT_1YL20331__지수__계"
+  },
+  "fires_per_10000": {
+   "key": "fires_per_10000",
+   "column": "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)",
+   "transform": "none",
+   "label_en": "Fires per 10000 residents",
+   "label_ko": "주민 만명당 화재 건수",
+   "expected_direction": "",
+   "role": "negative",
+   "raw_key": "eloc__DT_1YL21081__주민만명당화재발생건수＜br＞(A÷B×10000)"
+  }
+ },
+ "rules": {
+  "waic_tol": 4.0,
+  "cpo_fail_frac": 0.05,
+  "main_set": "S1_narrative_full",
+  "vif_threshold": 10.0,
+  "vif_action": "report",
+  "multiverse_n": 200,
+  "windows": {
+   "W1_2011-17": [
+    2011,
+    2017
+   ],
+   "W2_2018-24": [
+    2018,
+    2024
+   ]
+  },
+  "covid_post_from": 2020,
+  "years": [
+   2011,
+   2024
+  ],
+  "raw_rules": {
+   "likelihood": "forced-only 모형 WAIC 낮은 쪽(Poisson/NB)",
+   "set_choice": "WAIC 최소, 4 이내면 변수 적은 세트",
+   "credible": "95% CrI 1 제외",
+   "vif_drop": 10,
+   "multiverse_specs": 200,
+   "main_model_note": "Principal model = S1_narrative_full (12 district characteristics + 5 forced controls). VIF>10 retained and reported.",
+   "windows": {
+    "W1_2011-17": [
+     2011,
+     2017
+    ],
+    "W2_2018-24": [
+     2018,
+     2024
+    ]
+   },
+   "windows_note": "2018 '자궁경부암 전구단계 의심' 범주 신설과 '기타' 재분류(15.6만→2.9만) → 단절 전·후 창만 사용",
+   "years": [
+    2011,
+    2024
+   ]
+  },
+  "main_model_note": "Principal model = S1_narrative_full (12 district characteristics + 5 forced controls). VIF>10 retained and reported."
+ },
+ "note": "Outcome: women with an abnormal cervical cytology result (atypical cells, suspected precancerous lesion from 2018, suspected cancer) among women screened in the National Cancer Screening Program. Covariates: HPV exposure markers (crude divorce rate, single-person households, foreign residents), current smoking, screening coverage, reading setting (clinic share among screening institutions, general hospitals), deprivation (basic livelihood security recipients, tertiary education) and physical activity (walking, moderate physical activity, public sports facilities); five forced controls; negative control exposures hit-and-run collisions, traffic-culture index and fires; comparison outcomes transport-injury deaths and gastric cancer patients.",
+ "source_json": "sets_CXAB_std3.json",
+ "suffix": "_std3",
+ "offset_E_column": "E_std",
+ "offset_E_file": "CXAB_Estd3.csv",
+ "offset_E_sensitivity_column": "E_pop",
+ "offset_E_label": "age-standardised E (14 five-year bands 20-24 to 85+, national cervical-cytology abnormality rates by age DT_35007_N020; district examinee age structure approximated from resident female population x national age-specific screening coverage, district examinee totals observed)",
+ "sets_after_vif": {
+  "S1_narrative_full": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k",
+   "basic_livelihood_rate",
+   "tertiary_educated_share",
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k"
+  ],
+  "S2_hpv_exposure": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate"
+  ],
+  "S3_screening_reading": [
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k"
+  ],
+  "S4_activity": [
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k"
+  ],
+  "S5_core": [
+   "crude_divorce_rate",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "basic_livelihood_rate",
+   "walking_practice_rate"
+  ],
+  "S1b_obesity_sensitivity": [
+   "crude_divorce_rate",
+   "single_person_household_share",
+   "foreign_residents_per_1000",
+   "current_smoking_rate",
+   "cervical_screening_uptake",
+   "screening_clinic_share",
+   "genhosp_per100k",
+   "basic_livelihood_rate",
+   "tertiary_educated_share",
+   "walking_practice_rate",
+   "moderate_pa_rate",
+   "public_sports_facilities_per_100k",
+   "obesity_rate"
+  ]
+ }
+}
