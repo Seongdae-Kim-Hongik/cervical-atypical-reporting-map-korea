@@ -2,9 +2,9 @@
 
 Analysis code for the manuscript
 
-> Kim S. *Atypical-cell results dominate the district map of abnormal cervical screening results in Korea.* Submitted to *Journal of Medical Screening*.
+> Kim S. *Atypical-cell results dominate the district map of abnormal cervical screening results in Korea.* Submitted to *Journal of Lower Genital Tract Disease*.
 
-Archived version: Zenodo, https://doi.org/10.5281/zenodo.24332247 (v1.0.0).
+Archived version: Zenodo, https://doi.org/10.5281/zenodo.24342679 (v1.0.1).
 
 ## Contents
 
@@ -15,7 +15,7 @@ This repository contains code only. The processed district-year data (master tab
 | `01_스크립트/` | Analysis scripts (below) |
 | `04_분석/CXAB/sets_CXAB_*.json`, `config_CXAB_std3.json`, `run_std3_chain.sh` | Covariates with expected directions, forced controls, negative controls, comparison outcomes and model settings (principal model `std3`; sensitivity versions with crude expected counts, without the share aged 80 or older, with the queen contiguity graph and for 2011-2023) |
 | `04_분석/CXASC/`, `04_분석/CXHG/` | Settings for the component outcomes (atypical cells only; suspected precancer or cancer, 2018-2024) |
-| `04_분석/CXAB/MS/` | Scripts that read the result tables and write every number, table and figure in the manuscript and supplementary material, including `content_cxab.py`, which generates the Methods and Results text (the draft source of the Introduction and Discussion is not included) |
+| `04_분석/CXAB/MS/` | Scripts that read the result tables and write every number, table and figure in the manuscript and Supplemental Digital Content, including `content_cxab.py`, which generates the Methods and Results text (the draft source of the Introduction and Discussion is not included) |
 
 Folder and some column names are in Korean because the source tables are Korean; each script has a header comment describing its inputs and outputs.
 
@@ -41,7 +41,7 @@ Run from the repository root (set `ST_DATA_ROOT`, `ST_FBDZIP_CORRECTED` and `ST_
 | 5 | `85_window_maps.R`, `86_yearly_maps_ehsa.py`, `86b_ehsa_modified_mk.py`, `87_window_grid.py` | Maps, yearly smoothed ratios, persistence |
 | 6 | `88g_sens_prep.py CXAB std3 GCA,TRANS`, `88g_sens_suite.R` (`GROUP=1..6`), `88h_ppc_varpart.R`, `88k_struct_kh.R` with `kh_constraints.R`, `89g_sens_combine.py` | Sensitivity analyses, comparison outcomes, Knorr-Held models |
 | 7 | `99X3_cxab_validity.py`, `99X4_cxab_reader_posthoc.py`, `99X5_cxab_review_posthoc.py`, `49P_cxab_pa_reverse.R` | Post hoc analyses (cancer incidence correlations, atypical-to-higher-grade ratio, association opposite to the expected direction) |
-| 8 | `04_분석/CXAB/MS/build/` (`build_refs_cxab.py`, `numbers_cxab.py`, `figs_cxab.py`, `ms_base_cxab.py`, `build_jms_cxab.py`, `esm_jms_cxab.py`, `cover_jms_cxab.py`) | Manuscript, supplementary material, figures |
+| 8 | `04_분석/CXAB/MS/build/` (`build_refs_cxab.py`, `numbers_cxab.py`, `figs_cxab.py`, `ms_base_cxab.py`, `build_jms_cxab.py`, `build_jlgtd_cxab.py`, `esm_jlgtd_cxab.py`, `cover_jlgtd_cxab.py`, `figs_jlgtd_cxab.py`) | Manuscript, Supplemental Digital Content, figures |
 
 The boundary file is found at `data/boundary/final.shp` by default; set `ST_SHP` to use another path.
 

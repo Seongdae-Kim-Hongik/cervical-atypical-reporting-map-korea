@@ -1,19 +1,19 @@
-# esm_jms_cxab.py — CXAB Journal of Medical Screening Supplementary material(Supporting Methods·Table S1-S4) + STROBE 체크리스트 단독 파일(2026-11-18).
+# esm_jlgtd_cxab.py — CXAB JLGTD Supplemental Digital Content(익명)(Supporting Methods·Table S1-S4) + STROBE 체크리스트 단독 파일(2026-11-18).
 #  수치는 결과 CSV에서만. 미국 철자, 표 제목 쌍점 금지, 사후 분석은 post hoc 표기.
 import os, re, subprocess, pandas as pd
 import content_cxab as C
 from ms_base_cxab import LABEL, GROUPS, TX, foot_row
-from build_jms_cxab import TITLE as DTITLE
-HERE = os.path.dirname(os.path.abspath(__file__)); MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, "out_jms"); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3")
+from build_jlgtd_cxab import TITLE as DTITLE
+HERE = os.path.dirname(os.path.abspath(__file__)); MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, "out_jlgtd"); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3")
 N = C.N
 st = lambda t: f"{t[0]:.3f} ({t[1]:.3f}–{t[2]:.3f})" + ("" if t[3] else "")
 J = TX(cite="bracket")
 def TF(title, header, rows, foot="", fs=8, land=False, port=False):
     J.new_page("landscape") if land else (J.new_page("portrait") if port else J.page_break()); J.table_fit(title, header, rows, "", fs_max=fs, title_bold=True)
     if foot: foot_row(J, foot, 8, 12)
-J.para("<b>Supplementary material</b>"); J.para(f"Supplementary material for the manuscript entitled \"{DTITLE}\"")
-J.para("Contents. Supporting Methods; Table S1 (district characteristics); Table S2 (likelihood comparison); Table S3 (rate ratios across alternative specifications); Table S4 (national screening results by category and year).")
-J.head("Supporting Methods", 1)
+J.para("<b>Supplemental Digital Content</b>"); J.para(f"Supplemental Digital Content for the manuscript entitled \"{DTITLE}\"")
+J.para("Contents. Supplementary Methods; Table S1 (district characteristics); Table S2 (likelihood comparison); Table S3 (rate ratios across alternative specifications); Table S4 (national screening results by category and year).")
+J.head("Supplementary Methods", 1)
 SM = [
  ("Joining districts across tables", "District screening results (Korean Statistical Information Service table DT_35007_N019) were joined to the district frame through a crosswalk from the table's district classification codes to administrative codes. In the published results tables (DT_35007_N017 and DT_35007_N019) the codes for 2 districts in Busan (Gangseo-gu and Yeonje-gu) carry each other's names relative to the coverage table (DT_35007_N009), while the values follow the names. Joining by code and name together assigned all 28 district-years correctly; joining by code alone would have swapped them. General-ward rows of cities with wards were summed to the city, Sejong (published only as a province header row) was included in all 14 years, with Yeongi-gun as Sejong in 2011, and Gunwi-gun was assigned to Daegu. District totals equaled the national totals in every year. Cells published as '-' (suspected cancer and known cancer in small districts) were zero, which the equality of district and national totals confirmed."),
  ("Expected counts", f"National abnormal rates by year and 14 age groups came from DT_35007_N020. District results are not published by age, so the age structure of each district's screened women was estimated as the resident female population by 5-year age group multiplied by the national screening coverage for that age group and year (national examinees by age divided by the national female population by age), rescaled so that the estimated total equaled the observed number of women screened in the district. The rescaling factor ranged from 0.47 to 1.29. Women aged 20-29 years entered the program in 2016, so their coverage was zero before then. Expected counts were rescaled within each year so that their national sum equaled the observed sum. A crude expected count (examinees multiplied by the national abnormal rate) and a female-population expected count were used as sensitivity analyses."),
@@ -22,6 +22,8 @@ SM = [
  ("Model specification", "log(μ_it) = log(E_it) + α + Σ_k β_k x_kit + b_i + γ_t + δ_t, with y_it ~ negative binomial(μ_it, size θ). The district effect b_i followed the Besag-York-Mollié 2 model on the 593-edge contact graph of the 229 districts (islands linked to the nearest mainland district), with a penalized-complexity prior on its precision (P[σ > 0.5] = 0.01) and on the mixing parameter φ (P[φ < 0.5] = 2/3); γ_t was a scaled first-order random walk and δ_t an independent year effect, both with penalized-complexity precision priors (P[σ > 0.5] = 0.01). Coefficients β_k for standardized characteristics had normal priors with mean 0 and precision 4; the intercept had precision 0.001. Models were fitted with INLA 25.10.19 in R 4.6.0 with 1 thread. The 200 random-subset models each included every characteristic independently with probability 0.5 (seed 20261019), with the 5 forced controls always included. Between-district and within-district components were the district mean of each standardized characteristic and the yearly deviation from it. In the between-within model the 3 activity measures were kept undecomposed."),
  ("Post hoc analyses", "These analyses were added after the principal results were seen. (1) Spearman correlations between district SIRs (all years, and the 5 years around each registry release) and the age-standardized incidence of invasive cervical cancer published by the national cancer registry in its 2013 and 2018 district releases. (2) The district ratio of atypical-cell results to suspected precancer or cancer results summed over 2018-2024, its Moran I (593-edge contact graph, 499 permutations) and its Spearman correlations with SIRs and district characteristics. (3) For moderate-or-higher physical activity, which was associated opposite to the expected direction, negative binomial models with the same random effects including physical activity alone with the forced controls, and all characteristics except the other 2 activity measures."),
 ]
+SM.append(("Robustness, comparison outcomes and post hoc analyses", re.sub(r"\s*\[@[^\]]+\]", "", " ".join(p for x in C.METHODS if x[0] == "Statistical Analysis" for p in x[1:]))
+   .split("Claude (Anthropic)")[0].strip()))
 for h, t in SM: J.head(h, 2); J.para(t)
 M = pd.read_csv(os.path.join(B, "panel_META_CXAB_std3.csv"), encoding="utf-8-sig").set_index("variable")
 SRC = {"crude_divorce_rate": "Statistics Korea, vital statistics", "single_person_household_share": "Statistics Korea, census-based household statistics", "foreign_residents_per_1000": "Ministry of the Interior and Safety, local foreign residents",
@@ -70,22 +72,22 @@ rows4 = [[str(int(r.year)), f"{int(r.examinees):,}", f"{int(r.asc):,}", f"{int(r
 assert int(Y.abnormal.sum()) == N["cases_total"] and int(Y.examinees.sum()) == N["exam_total"]
 TF("Table S4. National Cervical Screening Results by Category and Year, 2011–2024", ["Year", "Examinations", "Atypical cells", "Suspected precancerous lesion", "Suspected cancer", "Abnormal, No. (%)", "Atypical share of abnormal, %", "Other"], rows4, land=True, fs=8, foot=
    ("Abnormal = atypical cells + suspected precancerous lesion + suspected cancer, the study outcome; national totals equal the sums of the district counts. The suspected precancerous lesion category was introduced in 2018 (— before 2018), when the 'other' category fell. Counts of negative and reactive or infectious results are not shown."))
-ps = os.path.join(OUT, "Supplementary_material.docx"); J.doc_title = "Supplementary material"; J.save(ps)
+ps = os.path.join(OUT, "Supplemental_Digital_Content.docx"); J.doc_title = "Supplemental Digital Content"; J.save(ps)
 subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm", "--convert-to", "pdf", "--outdir", OUT, ps], check=True, capture_output=True)
 print("saved", os.path.basename(ps), len(rows), "spec rows")
 MH = [x[0] for x in C.METHODS]; RH = [x[0] for x in C.RESULTS]
 CK = [("Title and abstract", "1", "Title page; Abstract"), ("Background/rationale", "2", "Introduction"), ("Objectives", "3", "Introduction, final paragraph"),
       ("Study design", "4", f"Methods, {MH[0]}"), ("Setting", "5", f"Methods, {MH[0]}"), ("Participants", "6", f"Methods, {MH[0]}; {MH[1]} (all women screened; ecological)"),
-      ("Variables", "7", f"Methods, {MH[1]}; {MH[2]}; Table S1"), ("Data sources/measurement", "8", "Methods; Supporting Methods"),
+      ("Variables", "7", f"Methods, {MH[1]}; {MH[2]}; Table S1"), ("Data sources/measurement", "8", "Methods; Supplementary Methods"),
       ("Bias", "9", f"Methods, {MH[3]}; Table S3"), ("Study size", "10", f"Methods, {MH[0]} (all 229 districts)"), ("Quantitative variables", "11", f"Methods, {MH[2]}"),
-      ("Statistical methods", "12", f"Methods, {MH[3]}; Supporting Methods; Table S2"), ("Participants (flow)", "13", "Not applicable (aggregate district data; no exclusions)"),
+      ("Statistical methods", "12", f"Methods, {MH[3]}; Supplementary Methods; Table S2"), ("Participants (flow)", "13", "Not applicable (aggregate district data; no exclusions)"),
       ("Descriptive data", "14", f"Results, {RH[0]}; Table 1"), ("Outcome data", "15", f"Results, {RH[0]}; Table 1; Figure 1"),
       ("Main results", "16", f"Results, {RH[1]}; {RH[2]}; Table 2; Figures 2–3"), ("Other analyses", "17", f"Results, {RH[3]}; {RH[4]}; Tables S2–S4"),
       ("Key results", "18", "Discussion, first paragraph"), ("Limitations", "19", "Discussion, Limitations"), ("Interpretation", "20", "Discussion"), ("Generalizability", "21", "Discussion; Conclusions"),
-      ("Other information (funding, code)", "22", "Statements and Declarations (Funding; Data availability)")]
+      ("Other information (funding, code)", "22", "Title page (source of funding; data availability)")]
 K = TX(cite="bracket"); K.para("<b>STROBE checklist</b>"); K.para(f"Manuscript \"{DTITLE}\"")
 K.table_fit("STROBE Checklist for This Ecological Study", ["Item", "No.", "Where reported"], [[a, b, c] for a, b, c in CK], "", fs_max=9, title_bold=True)
-foot_row(K, "STROBE, Strengthening the Reporting of Observational Studies in Epidemiology. Section names refer to the main manuscript and the Supplementary material.", 8, 12)
+foot_row(K, "STROBE, Strengthening the Reporting of Observational Studies in Epidemiology. Section names refer to the main manuscript and the Supplemental Digital Content.", 8, 12)
 pk = os.path.join(OUT, "STROBE_checklist.docx"); K.doc_title = "STROBE checklist"; K.save(pk)
 subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm", "--convert-to", "pdf", "--outdir", OUT, pk], check=True, capture_output=True)
 print("saved", os.path.basename(pk))

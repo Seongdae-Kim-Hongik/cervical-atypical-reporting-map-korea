@@ -1,5 +1,3 @@
-# build_jms_cxab.py — CXAB(자궁경부암 검진 세포 이상 판정) Journal of Medical Screening Original Article 원고 조립(2026-11-18).
-#  JMS 규정(Sage 공식 Submission Guidelines 11/18 확인): 원저 본문 ≤4,000단어(초록·표·그림·참고문헌 제외), 구조 초록 ≤250
 #   (Objectives/Setting/Methods/Results/Conclusions), 키워드 ≥4, 본문 Introduction/Methods/Results/Discussion/Conclusions,
 #   표지 = 제목·저자·소속·교신 연락처·선언 목록, 본문 끝 Acknowledgements → Author contributions → Statements and Declarations(6항),
 #   Sage Vancouver(번호 위첨자는 구두점 뒤, 저자 3명까지·4명 이상은 3명 + et al, 학술지 약어), 그림 300 dpi, 단일 익명, 추천 심사자 받지 않음, 게재료 없음.
@@ -55,7 +53,7 @@ def declarations(J, lvl=2):
         J.head(h, lvl); J.para(t)
 
 LK = N["lik"]
-REPL = [   # review(2026-11-18) 반영: JMS 원고에서만 바꾸는 문장(content_cxab 원본 보존), 각각 정확히 1회 적용
+REPL = [   # 교차검토(2026-11-18) 반영: 이 원고에서만 바꾸는 문장(content_cxab 원본 보존), 각각 정확히 1회 적용
  ("according to the STROBE statement [@vonelm2007strengthening] (STROBE checklist). ", "according to the STROBE statement, with the checklist provided as a supplementary file [@vonelm2007strengthening]. "),
  ("Women aged 20-29 years became eligible in 2016 and had the highest abnormal rates (Figure 1). ",
   "Women aged 20-29 years became eligible in 2016. The published tables do not define the 'other' category, which was larger than the outcome in every year before 2018 and fell sharply in 2018; it was not part of the outcome, and before 2018 the program had no separate category for suspected precancerous lesion (Table S4). "),
