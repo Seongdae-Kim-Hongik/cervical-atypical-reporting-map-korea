@@ -6,12 +6,12 @@ from docx.shared import Pt
 import content_cxab as C
 import ms_base_cxab as B0
 from ms_base_cxab import TX, table1, table2, put_table, docx_text, ORCID, AFFIL, ADDRESS, PHONE, ETHICS, REFS
-HERE = os.path.dirname(os.path.abspath(__file__)); MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out_jms"); os.makedirs(OUT, exist_ok=True)
+HERE = os.path.dirname(os.path.abspath(__file__)); MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out_text"); os.makedirs(OUT, exist_ok=True)
 N = C.N
-DRAFT = os.path.join(MS, "draft", "02_manuscript_jms.md")
+DRAFT = os.path.join(MS, "draft", "manuscript_text.md")
 _zf = os.path.join(OUT, "zenodo_doi.txt"); ZENODO = open(_zf).read().strip() if os.path.exists(_zf) else "[ZENODO DOI]"
 _gf = os.path.join(OUT, "github_url.txt"); GITHUB = open(_gf).read().strip() if os.path.exists(_gf) else "[GITHUB URL]"
-TITLE = "Atypical-cell results dominate the district map of abnormal cervical screening results in Korea"
+TITLE = "Reading or risk? Atypical-cell reports shape the district map of abnormal cervical cytology across South Korea"
 KEYWORDS = "Papanicolaou test; atypical squamous cells of the cervix; uterine cervical neoplasms; early detection of cancer; quality control; spatial analysis; Republic of Korea"
 assert ":" not in TITLE and "HPV" not in TITLE and "Pap " not in TITLE and TITLE != C.TITLE
 AI_USE = ("The author used Claude (Anthropic) and ChatGPT (OpenAI) only for translation and English-language editing of the manuscript. "
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     J, rl, D = build(); J.doc_title = "Manuscript"; J.save(p)
     for _ in range(2):
         mw = main_words(p); J, rl, D = build({"main": f"{mw:,}", "abstract": aw, "refs": len(rl)}); J.doc_title = "Manuscript"; J.save(p)
-    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_jms", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
+    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_text", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
     npg = int(re.search(r"Pages:\s+(\d+)", subprocess.run(["pdfinfo", p.replace(".docx", ".pdf")], capture_output=True, text=True).stdout).group(1))
     mw = main_words(p); assert mw <= 4000 and aw <= 250
     open(os.path.join(OUT, "reference_list.txt"), "w", encoding="utf-8").write("\n".join(rl))

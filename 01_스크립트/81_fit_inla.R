@@ -35,7 +35,7 @@ if(length(isl)){cen<-st_coordinates(st_centroid(st_geometry(G)));kn<-knearneigh(
 if(nzchar(Sys.getenv("ST_GRAPH"))){sg<-inla.read.graph(Sys.getenv("ST_GRAPH"));stopifnot(sg$n==nrow(G));for(i in seq_len(sg$n))nb[[i]]<-as.integer(sort(sg$nbs[[i]]));attr(nb,"sym")<-TRUE}   # 2026-11-04: ST_GRAPH 지정 시 외부 그래프(예 593 edge contact) 사용, 미지정이면 기존 queen+섬 규칙
 stopifnot(all(card(nb)>0));nb2INLA(GF,nb);g<-inla.read.graph(GF);lw<-nb2listw(nb,style="W",zero.policy=TRUE)
 nbo<-subset(nb,OBSR);lwo<-nb2listw(nbo,style="W",zero.policy=TRUE);GO<-G$region[OBSR]   # Moran용: 관측 시군구만
-moran_obs<-function(x,regions){k<-!is.na(x);if(sum(k)<10)return(list(statistic=NA,p.value=NA));kk<-G$region%in%regions[k];nbk<-subset(nb,kk);lwk<-nb2listw(nbk,style="W",zero.policy=TRUE);moran.mc(x[k][match(G$region[kk],regions[k])],lwk,999,zero.policy=TRUE)}   # METS 패치: NA 지역 제외 부분그래프 Moran
+moran_obs<-function(x,regions,alt="greater"){k<-!is.na(x);if(sum(k)<10)return(list(statistic=NA,p.value=NA,expected_I=NA));kk<-G$region%in%regions[k];nbk<-subset(nb,kk);lwk<-nb2listw(nbk,style="W",zero.policy=TRUE);mm<-moran.mc(x[k][match(G$region[kk],regions[k])],lwk,999,zero.policy=TRUE,alternative=alt);mm$expected_I<- -1/(sum(kk)-1);mm}   # METS 패치: NA 지역 제외 부분그래프 Moran
 write.csv(data.frame(n_regions=length(nb),n_links=sum(card(nb)),n_subgraphs=n.comp.nb(nb)$nc,islands_linked=length(isl),island_regions=paste(G$region[isl],collapse=";"),mean_neighbors=round(mean(card(nb)),2)),NBF,row.names=FALSE)
 LOG("graph: %d regions, %d islands linked (%s)",length(nb),length(isl),paste(G$region[isl],collapse=","))
 
@@ -101,11 +101,11 @@ if(!all(file.exists(F3,F3f,F3n,F6,F8))){
   agg<-aggregate(cbind(cases,E)~fbd_region,DD,sum);rr$SIR_obs<-round((agg$cases/agg$E)[match(rr$fbd_region,agg$fbd_region)],3)
   write.csv(rr,F6,row.names=FALSE)
   ye<-m$summary.random$time;write.csv(data.frame(year=Y0+ye$ID-1,rw1_mean=round(ye$mean,4),lo=round(ye$`0.025quant`,4),hi=round(ye$`0.975quant`,4)),F3y,row.names=FALSE)
-  # 잔차 Moran(적합값 기준 Pearson, 시군구 평균)
+  # 잔차 Moran(적합값 기준 Pearson, 시군구 평균) — 2026-11-18 양측 순열 검정(음의 I=과평활도 잡음, UROP 말라리아 교훈), 관측 log SIR은 한쪽(greater) 유지
   mu<-m$summary.fitted.values$mean*DD$E;sz<-if(MAINFAM=="nbinomial")m$summary.hyperpar[grep("size",rownames(m$summary.hyperpar))[1],"mean"] else Inf
   pr<-(DD$cases-mu)/sqrt(mu+mu^2/sz);pra<-tapply(pr,DD$area,mean);set.seed(1)
-  mr<-moran_obs(as.numeric(pra[as.character(which(OBSR))]),GO);mo<-moran_obs(log(agg$cases/agg$E)[match(GO,agg$fbd_region)],GO)
-  write.csv(data.frame(quantity=c("observed_logSIR_pooled","pearson_residual_area_mean"),moran_I=round(c(mo$statistic,mr$statistic),4),p_perm=round(c(mo$p.value,mr$p.value),4),nperm=999),F8,row.names=FALSE)
+  mr<-moran_obs(as.numeric(pra[as.character(which(OBSR))]),GO,alt="two.sided");mo<-moran_obs(log(agg$cases/agg$E)[match(GO,agg$fbd_region)],GO)
+  write.csv(data.frame(quantity=c("observed_logSIR_pooled","pearson_residual_area_mean"),moran_I=round(c(mo$statistic,mr$statistic),4),p_perm=round(c(mo$p.value,mr$p.value),4),alternative=c("greater","two.sided"),expected_I=round(c(mo$expected_I,mr$expected_I),4),nperm=999),F8,row.names=FALSE)
   fs<-fitstat(m,MAINFAM)
   write.csv(data.frame(fs,set=best,nvar=length(MAINV),n_hyp=length(HYPV),n_obs=nrow(DD),n_regions=sum(OBSR),n_years=length(unique(DD$year)),total_cases=sum(DD$cases),
     n_hotspot=sum(rr$class=="hotspot"),n_coldspot=sum(rr$class=="coldspot"),n_unobserved=sum(!OBSR),RR_min=min(rr$RR[OBSR]),RR_max=max(rr$RR[OBSR]),n_cred_hyp=sum(ir$cred[ir$role=="hypothesis"]),

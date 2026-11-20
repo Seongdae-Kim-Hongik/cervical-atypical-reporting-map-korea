@@ -1,4 +1,3 @@
-#   표지 순서 = 제목(약어 금지) → running title <40자 → 저자(학위) → 소속 → 교신 연락처 → Funding → COI → Author contributions(CRediT) → Acknowledgments → Precis(2문장) → 초록·키워드(3-7 MeSH) → 쪽·표·그림·보충 수,
 #   본문 → References(AMA, 저자 6명 이하 전원·7명 이상 3명 + et al, 수동 번호) → 표(각 쪽) → Figure legends. 미국 철자. 단일 익명. 소속 = 홍익대 단독.
 import os, re, json, subprocess
 from docx.oxml.ns import qn

@@ -12,7 +12,7 @@ KH = ("KH_typeI", "KH_typeII", "KH_typeIII", "KH_typeIV"); BEST_KH = min(KH, key
 EN = {"서울시": "Seoul", "경기도": "Gyeonggi-do", "강원도": "Gangwon-do", "인천시": "Incheon", "충청남도": "Chungcheongnam-do", "경상북도": "Gyeongsangbuk-do", "경상남도": "Gyeongsangnam-do", "부산시": "Busan"}
 def sidos(d, k=4):
     l = [f"{EN[a]} ({b})" for a, b in list(d.items())[:k]]; return ", ".join(l[:-1]) + " and " + l[-1]
-TITLE = "Is the geography of abnormal Papanicolaou test results in Korea mainly a geography of atypical-cell reporting?"
+TITLE = "Reading or risk? Atypical-cell reports shape the district map of abnormal cervical cytology across South Korea"
 RUNNING = "Geography of abnormal cervical cytology"
 KEYWORDS = "Papanicolaou test; atypical squamous cells of the cervix; uterine cervical neoplasms; mass screening; quality control; spatial analysis; Republic of Korea"
 assert ":" not in TITLE and len(RUNNING) < 40 and "HPV" not in TITLE and "Pap " not in TITLE

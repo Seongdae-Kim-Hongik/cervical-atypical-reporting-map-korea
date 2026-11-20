@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite it as below."
-title: "Atypical-cell reporting and the district map of abnormal cervical screening results, Republic of Korea, 2011-2024 (analysis code)"
+title: "Atypical-cell reporting and the district map of abnormal cervical cytology, Republic of Korea, 2011-2024 (analysis code)"
 authors:
   - family-names: Kim
     given-names: Seongdae
     affiliation: Hongik University
     orcid: "https://orcid.org/0000-0002-1525-0091"
-version: "1.0.1"
-date-released: 2026-11-18
+version: "1.1.0"
+date-released: 2026-11-20
 license: MIT
 repository-code: "https://github.com/Seongdae-Kim-Hongik/cervical-atypical-reporting-map-korea"
-doi: 10.5281/zenodo.24342679
+doi: 10.5281/zenodo.24398439

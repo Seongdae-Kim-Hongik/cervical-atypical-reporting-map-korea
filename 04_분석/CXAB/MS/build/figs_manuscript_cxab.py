@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# figs_jlgtd_cxab.py — CXAB JLGTD 그림(2026-11-18, 패널 문자 대문자 1A·1B 규정, 선화 1200 dpi). 원본 figs_cxab(2026-11-14, figs_sknd 이식). 컬러, 패널 문자 = fig.text 상수 PANEL_LABEL_PT(모든 패널 같은 크기·굵기; 저널 지침 '(a), (b), (c)'에 따라 소문자),
 #  방위표 3배(동해 중간), 그림 안 설명문 없음, 결합은 시군구 코드로만. TIFF: 지도 600 dpi, 선화 1200 dpi.
 #  Fig 1 (a) 연도별 판정률(비정형·고등급) (b) 연령별 판정률 · Fig 2 지도 (a) 14년 SIR (b) 잔차 공간 RR (c) 핫·콜드스팟 (d) 비정형:고등급 비 2018-24 · Fig 3 3변수 모형별 RR
 import os, unicodedata, numpy as np, pandas as pd, geopandas as gpd, matplotlib
@@ -11,7 +10,7 @@ from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 from numbers_cxab import load, DESC, RS, B, DIV, FOR, MPA
 SHP = os.path.expandvars("$ST_DATA_ROOT") + "/기타/R_Studio/FBD_DATA_ZIP/final.shp"
-HERE = os.path.dirname(os.path.abspath(__file__)); FIG = os.path.join(HERE, "figs_jlgtd"); OUTF = os.path.join(os.path.dirname(HERE), "out_jlgtd", "Figures"); os.makedirs(FIG, exist_ok=True); os.makedirs(OUTF, exist_ok=True)
+HERE = os.path.dirname(os.path.abspath(__file__)); FIG = os.path.join(HERE, "figs_out"); OUTF = os.path.join(os.path.dirname(HERE), "out_base", "Figures"); os.makedirs(FIG, exist_ok=True); os.makedirs(OUTF, exist_ok=True)
 MM = 1 / 25.4; W = 170 * MM; DPI = 600; LW = 0.3
 PANEL_LABEL_PT = 54   # 15 런북 11/10·37호: 48–64 pt, fig.text 상수 하나
 plt.rcParams.update({"font.family": "Arial", "font.size": 9, "legend.fontsize": 8, "legend.title_fontsize": 8.5, "axes.linewidth": 0.6, "pdf.fonttype": 42})

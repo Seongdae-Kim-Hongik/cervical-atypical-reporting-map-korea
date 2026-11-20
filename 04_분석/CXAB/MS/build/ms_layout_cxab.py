@@ -1,16 +1,12 @@
-# build_jlgtd_cxab.py — CXAB Journal of Lower Genital Tract Disease Original Research 조립(2026-11-18).
-#  JLGTD 규정(Instructions for Authors, edmgr.ovid.com/jlgtd 11/18 확인): 본문 ≤3,000단어(초록·참고문헌·범례·표·SDC 제외), 서론 ≤400, 고찰+결론 ≤1,200,
-#   표+그림 ≤6, 참고문헌 ≤30, précis 1문장 ≤25단어, 구조 초록 ≤250(Objectives ≤40/Methods/Results/Conclusions), 키워드 6-10, 이중 익명:
-#   익명 원고 = 제목·précis·초록·키워드·본문·disclosure statement·약어 목록·참고문헌(줄번호), 제목면·표·그림·범례는 별도 파일, IRB 이름은 방법 절에 쓰지 않음,
 #   AI 사용은 방법 절에 공개, 참고문헌 AMA(6명 이하 전원·7명 이상 3명 + et al, 호수 생략), 다중 패널 1A·1B, 컬러 무료, 범례 ≤125단어.
 import os, re, subprocess
 import content_cxab as C
 import ms_base_cxab as B0
-import build_jms_cxab as JM
+import ms_text_cxab as JM
 from ms_base_cxab import TX, table1, table2, put_table, docx_text, ORCID, ADDRESS, PHONE, REFS
-HERE = os.path.dirname(os.path.abspath(__file__)); MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out_jlgtd"); os.makedirs(OUT, exist_ok=True)
+HERE = os.path.dirname(os.path.abspath(__file__)); MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out_base"); os.makedirs(OUT, exist_ok=True)
 N = C.N
-DRAFT = os.path.join(MS, "draft", "03_manuscript_jlgtd.md")
+DRAFT = os.path.join(MS, "draft", "manuscript_base.md")
 _r = lambda f, d: open(os.path.join(OUT, f)).read().strip() if os.path.exists(os.path.join(OUT, f)) else d
 ZENODO = _r("zenodo_doi.txt", "[ZENODO DOI]"); GITHUB = _r("github_url.txt", "[GITHUB URL]")
 TITLE = JM.TITLE; RUNNING = "Atypical-cell results and screening maps"
@@ -21,7 +17,9 @@ KEEP = {"walboomers1999human", "arbyn2020estimates", "park2024cancer", "lee2025c
         "vonelm2007strengthening", "web:kosis2026screening", "web:mois2026population", "inskip1983methods", "spix2016correction", "besag1991bayesian", "rue2009approximate",
         "knorrheld2000bayesian", "steegen2016increasing", "lipsitch2010negative", "vanderweele2017sensitivity", "web:kccr2026incidence", "greenland2001ecologic", "branca2015recommendations"}
 assert len(KEEP) <= 30 and KEEP <= set(REFS)
-ETHICS_TP = B0.ETHICS
+ETHICS_TP = ("The Institutional Review Board of Hongik University approved the study on November 4, 2025 (7002340-202511-HR-012), before the analysis began, and approved its continuing review on November 3, 2026 (7002340-202611-HR-040); "
+             "informed consent was waived because only published aggregate statistics were used.")   # 11/19 반려: IRB 승인 날짜(승인서 원문 2025-11-04·2026-11-03)
+assert B0.ETHICS.startswith("The Institutional Review Board of Hongik University approved the study (7002340-202511-HR-012; continuing review 7002340-202611-HR-040)")
 FUNDING = "None. The author received no financial support for the research, authorship, and/or publication of this article."
 COI = "The author has no conflicts of interest to disclose."
 def data_statement(): return (f"All source data are publicly available aggregate statistics (National Health Insurance Service, resident registration, Korea Community Health Survey and national cancer registry, via the Korean Statistical Information Service). "
@@ -131,7 +129,6 @@ def build_ms():
             h = p[4:].strip(); J.head(h, 1 if h == "Conclusions" else 2); continue
         J.para(cites(trim(p, [0] * len(TRIM))), indent=True)
     J.counting = False
-    J.head("Disclosure Statement", 1); J.para(f"{COI} No funding was received for this work.")
     J.head("Abbreviations", 1); J.para("; ".join(f"{a}, {b}" for a, b in ABBR) + ".")
     assert set(J.cites) <= KEEP and len(J.cites) <= 30, (set(J.cites) - KEEP, len(J.cites))
     J.page_break(); J.head("References", 1); J.raw = True; rl = []
@@ -147,8 +144,9 @@ def build_tp(c):
     J.para(f"<b>Running title:</b> {RUNNING}", before=6)
     J.para("Seongdae Kim, PhD", before=6); J.para("Department of Biohealth Convergence Open Sharing System, Hongik University, Seoul, Republic of Korea")
     J.para(f"<b>Corresponding author:</b> Seongdae Kim, PhD, {ADDRESS}. Telephone: {PHONE}. Email: kimsd@hongik.ac.kr. ORCID: {ORCID}", before=6)
-    J.para(f"<b>Source of funding:</b> {FUNDING}", before=6); J.para(f"<b>Conflict of interest:</b> {COI}")
-    J.para(f"<b>IRB status:</b> {ETHICS_TP}"); J.para(f"<b>Data availability:</b> {data_statement()}")
+    J.para(f"<b>IRB approval:</b> {ETHICS_TP}", before=6)
+    J.para("<b>Disclosure statement:</b> " + COI + " Source of funding: none; " + FUNDING.replace("None. The author", "the author"))
+    J.para(f"<b>Data availability:</b> {data_statement()}")
     J.para("<b>Author contributions:</b> Seongdae Kim conceived the study, curated the data, conducted the analysis, prepared the figures and wrote and revised the manuscript.")
     J.para("<b>Acknowledgements:</b> None.")
     J.para(f"<b>Word counts:</b> précis, {c['precis']}; abstract, {c['abstract']}; text, {c['text']:,} (introduction, {c['intro']}; discussion and conclusions, {c['disc']}).", before=6)
@@ -156,9 +154,13 @@ def build_tp(c):
     p = os.path.join(OUT, "Title_page.docx"); J.doc_title = "Title page"; J.save(p); return p
 
 def tbl(t): return (re.sub(r"^TABLE (\d)\.", r"Table \1.", t[0]),) + tuple(t[1:])
-def build_tables():
-    J = TX(cite="sup"); put_table(J, tbl(table1())); J.new_page("landscape"); put_table(J, tbl(table2()), fs=8)
-    p = os.path.join(OUT, "Tables.docx"); J.doc_title = "Tables"; J.save(p); return p
+def build_tables():   # 11/19 반려: 표마다 편집 가능한 Word 파일 하나씩(Table1.docx·Table2.docx)
+    J = TX(cite="sup"); put_table(J, tbl(table1()))
+    p1 = os.path.join(OUT, "Table1.docx"); J.doc_title = "Table 1"; J.save(p1)
+    J = TX(cite="sup"); s0 = J.doc.sections[0]; from docx.enum.section import WD_ORIENT; from docx.shared import Cm as _Cm   # 빈 첫 쪽 없이 가로 방향
+    s0.orientation = WD_ORIENT.LANDSCAPE; s0.page_width, s0.page_height = _Cm(29.7), _Cm(21.0); put_table(J, tbl(table2()), fs=8)
+    p2 = os.path.join(OUT, "Table2.docx"); J.doc_title = "Table 2"; J.save(p2)
+    return p1, p2
 def build_legends():
     J = TX(cite="sup"); J.head("Figure Legends", 1)
     for k in sorted(FIGCAP):
@@ -166,17 +168,18 @@ def build_legends():
     p = os.path.join(OUT, "Figure_legends.docx"); J.doc_title = "Figure legends"; J.save(p); return p
 
 def topdf(p):
-    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_jlgtd", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
+    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_layout", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
 
 if __name__ == "__main__":
     p = os.path.join(OUT, "Manuscript_anonymized.docx")
     J, rl, D = build_ms(); J.doc_title = "Manuscript"; J.save(p)
     aw = sum(len(re.sub(r"^(Objectives|Methods|Results|Conclusions):\s*", "", x).split()) for x in D["Abstract"]); pw = len(D["Precis"][0].split())
-    text = sec_words(p, "Introduction", "Disclosure Statement"); intro = sec_words(p, "Introduction", "Methods"); disc = sec_words(p, "Discussion", "Disclosure Statement")
+    text = sec_words(p, "Introduction", "Abbreviations"); intro = sec_words(p, "Introduction", "Methods"); disc = sec_words(p, "Discussion", "Abbreviations")
     ow = len(D["Abstract"][0].replace("Objectives:", "").split())
     assert text <= 3000 and intro <= 400 and disc <= 1200 and aw <= 250 and pw <= 25 and ow <= 40, (text, intro, disc, aw, pw, ow)
     c = dict(precis=pw, abstract=aw, text=text, intro=intro, disc=disc)
-    for f in (p, build_tp(c), build_tables(), build_legends()): topdf(f)
+    for f in (p, build_tp(c), *build_tables(), build_legends()): topdf(f)
+    assert "Disclosure Statement" not in docx_text(p) and "November 4, 2025" in docx_text(os.path.join(OUT, "Title_page.docx"))
     txt = docx_text(p)
     assert not re.search(r"(?i)hongik|seongdae|kim s\b|github|zenodo|7002340", txt), "익명화 위반"
     open(os.path.join(OUT, "reference_list.txt"), "w", encoding="utf-8").write("\n".join(rl))

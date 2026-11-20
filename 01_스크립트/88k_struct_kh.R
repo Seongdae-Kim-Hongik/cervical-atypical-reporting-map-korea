@@ -194,13 +194,13 @@ if(GROUP=="maps"){suppressPackageStartupMessages({library(ggplot2);library(dplyr
 
 ## ───────── combine ─────────
 ## ───────── review: 심사 선제 산출물(2026-11-06, JMIR HAV R1 지적 → 플레이북 17 B5·B6·B8) ─────────
-#  S50_resid_moran_by_spec.csv : 사양별 잔차 Moran(81 S3와 같은 Pearson 잔차·시군구 평균·999 순열)  (H-M5, H-BZ1)
+#  S50_resid_moran_by_spec.csv : 사양별 잔차 Moran(81 S3와 같은 Pearson 잔차·시군구 평균·999 순열, 11/18부터 양측)  (H-M5, H-BZ1)
 #  S50_parsimonious.csv        : 강제통제 + 다중우주 강건 변수만의 간결 모형 계수·WAIC        (H-M9, H-BZ3)
 #  S50_region_slopes.csv       : 강건 변수별 5권역 기울기(권역별 변수 분리) + WAIC 차이      (H-M6, H-AB4)
 if(GROUP=="review"){
   F50<-file.path(RES,"S50_resid_moran_by_spec.csv");F50p<-file.path(RES,"S50_parsimonious.csv");F50r<-file.path(RES,"S50_region_slopes.csv")
   OBSR<-G$region%in%unique(DD$fbd_region[!is.na(DD$cases)])
-  moran_obs<-function(x,regions){k<-!is.na(x);if(sum(k)<10)return(list(statistic=NA,p.value=NA));kk<-G$region%in%regions[k];nbk<-subset(nb,kk);lwk<-nb2listw(nbk,style="W",zero.policy=TRUE);moran.mc(x[k][match(G$region[kk],regions[k])],lwk,999,zero.policy=TRUE)}
+  moran_obs<-function(x,regions){k<-!is.na(x);if(sum(k)<10)return(list(statistic=NA,p.value=NA));kk<-G$region%in%regions[k];nbk<-subset(nb,kk);lwk<-nb2listw(nbk,style="W",zero.policy=TRUE);moran.mc(x[k][match(G$region[kk],regions[k])],lwk,999,zero.policy=TRUE,alternative="two.sided")}   # 2026-11-18 잔차 Moran 양측 순열(음의 I=과평활도 잡음)
   rmoran<-function(m){mu<-m$summary.fitted.values$mean*DD$E;sz<-if(MAINFAM=="nbinomial")m$summary.hyperpar[grep("size",rownames(m$summary.hyperpar))[1],"mean"] else Inf
     pr<-(DD$cases-mu)/sqrt(mu+mu^2/sz);pra<-tapply(pr,DD$area,mean);set.seed(1);mm<-moran_obs(as.numeric(pra[as.character(which(OBSR))]),G$region[OBSR]);c(I=round(unname(mm$statistic),4),p=round(mm$p.value,4))}
   S7s<-read.csv(file.path(RES,"S7_multiverse_summary.csv"),stringsAsFactors=FALSE);ROBV<-S7s$cov[S7s$robust%in%c(TRUE,"TRUE","True")]
@@ -210,8 +210,8 @@ if(GROUP=="review"){
               no_spatial=list(v=MAINV,sp=""),iid_district=list(v=MAINV,sp="f(area,model='iid',hyper=pcp)"),icar_district=list(v=MAINV,sp="f(area,model='besag',graph=g,scale.model=TRUE,constr=TRUE,hyper=pcp)"),
               typeI_interaction=list(v=MAINV,sp=SPf(),ex="f(id,model='iid',hyper=pcp)"))
   if(!file.exists(F50)){rows<-list();for(nm in names(specs)){s<-specs[[nm]];t0<-Sys.time();m<-safe(s$v,sp=s$sp,extra=if(is.null(s$ex))character(0) else s$ex)
-      if(is.null(m)){rows[[nm]]<-data.frame(spec=nm,n_cov=length(s$v),WAIC=NA,resid_moran_I=NA,p_perm=NA);next}
-      rm<-rmoran(m);rows[[nm]]<-data.frame(spec=nm,n_cov=length(s$v),WAIC=round(m$waic$waic,1),resid_moran_I=rm["I"],p_perm=rm["p"])
+      if(is.null(m)){rows[[nm]]<-data.frame(spec=nm,n_cov=length(s$v),WAIC=NA,resid_moran_I=NA,p_perm=NA,alternative="two.sided",expected_I=round(-1/(sum(OBSR)-1),4));next}
+      rm<-rmoran(m);rows[[nm]]<-data.frame(spec=nm,n_cov=length(s$v),WAIC=round(m$waic$waic,1),resid_moran_I=rm["I"],p_perm=rm["p"],alternative="two.sided",expected_I=round(-1/(sum(OBSR)-1),4))
       if(nm=="parsimonious"){r<-do.call(rbind,lapply(s$v,function(v)irr(m,v)));r$role<-ifelse(r$cov%in%FORCED,"forced","robust");r$WAIC<-round(m$waic$waic,1);write.csv(r,F50p,row.names=FALSE,fileEncoding="UTF-8")}
       LOG("%-18s WAIC %9.1f  resid Moran %.3f (p %.3f)  %.1f min",nm,rows[[nm]]$WAIC,rm["I"],rm["p"],as.numeric(difftime(Sys.time(),t0,units="mins")))}
     write.csv(do.call(rbind,rows),F50,row.names=FALSE,fileEncoding="UTF-8")}

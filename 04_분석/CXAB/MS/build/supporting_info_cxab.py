@@ -1,17 +1,16 @@
-# esm_jlgtd_cxab.py — CXAB JLGTD Supplemental Digital Content(익명)(Supporting Methods·Table S1-S4) + STROBE 체크리스트 단독 파일(2026-11-18).
 #  수치는 결과 CSV에서만. 미국 철자, 표 제목 쌍점 금지, 사후 분석은 post hoc 표기.
 import os, re, subprocess, pandas as pd
 import content_cxab as C
 from ms_base_cxab import LABEL, GROUPS, TX, foot_row
-from build_jlgtd_cxab import TITLE as DTITLE
-HERE = os.path.dirname(os.path.abspath(__file__)); MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, "out_jlgtd"); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3")
+from build_manuscript_cxab import TITLE as DTITLE
+HERE = os.path.dirname(os.path.abspath(__file__)); MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, "out"); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3")
 N = C.N
 st = lambda t: f"{t[0]:.3f} ({t[1]:.3f}–{t[2]:.3f})" + ("" if t[3] else "")
 J = TX(cite="bracket")
 def TF(title, header, rows, foot="", fs=8, land=False, port=False):
     J.new_page("landscape") if land else (J.new_page("portrait") if port else J.page_break()); J.table_fit(title, header, rows, "", fs_max=fs, title_bold=True)
     if foot: foot_row(J, foot, 8, 12)
-J.para("<b>Supplemental Digital Content</b>"); J.para(f"Supplemental Digital Content for the manuscript entitled \"{DTITLE}\"")
+J.para("<b>Supporting Information</b>"); J.para(f"Supporting Information for the manuscript entitled \"{DTITLE}\"")
 J.para("Contents. Supplementary Methods; Table S1 (district characteristics); Table S2 (likelihood comparison); Table S3 (rate ratios across alternative specifications); Table S4 (national screening results by category and year).")
 J.head("Supplementary Methods", 1)
 SM = [
@@ -72,22 +71,22 @@ rows4 = [[str(int(r.year)), f"{int(r.examinees):,}", f"{int(r.asc):,}", f"{int(r
 assert int(Y.abnormal.sum()) == N["cases_total"] and int(Y.examinees.sum()) == N["exam_total"]
 TF("Table S4. National Cervical Screening Results by Category and Year, 2011–2024", ["Year", "Examinations", "Atypical cells", "Suspected precancerous lesion", "Suspected cancer", "Abnormal, No. (%)", "Atypical share of abnormal, %", "Other"], rows4, land=True, fs=8, foot=
    ("Abnormal = atypical cells + suspected precancerous lesion + suspected cancer, the study outcome; national totals equal the sums of the district counts. The suspected precancerous lesion category was introduced in 2018 (— before 2018), when the 'other' category fell. Counts of negative and reactive or infectious results are not shown."))
-ps = os.path.join(OUT, "Supplemental_Digital_Content.docx"); J.doc_title = "Supplemental Digital Content"; J.save(ps)
-subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm", "--convert-to", "pdf", "--outdir", OUT, ps], check=True, capture_output=True)
+ps = os.path.join(OUT, "Supporting_Information.docx"); J.doc_title = "Supporting Information"; J.save(ps)
+subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm_cyt", "--convert-to", "pdf", "--outdir", OUT, ps], check=True, capture_output=True)
 print("saved", os.path.basename(ps), len(rows), "spec rows")
 MH = [x[0] for x in C.METHODS]; RH = [x[0] for x in C.RESULTS]
 CK = [("Title and abstract", "1", "Title page; Abstract"), ("Background/rationale", "2", "Introduction"), ("Objectives", "3", "Introduction, final paragraph"),
-      ("Study design", "4", f"Methods, {MH[0]}"), ("Setting", "5", f"Methods, {MH[0]}"), ("Participants", "6", f"Methods, {MH[0]}; {MH[1]} (all women screened; ecological)"),
-      ("Variables", "7", f"Methods, {MH[1]}; {MH[2]}; Table S1"), ("Data sources/measurement", "8", "Methods; Supplementary Methods"),
-      ("Bias", "9", f"Methods, {MH[3]}; Table S3"), ("Study size", "10", f"Methods, {MH[0]} (all 229 districts)"), ("Quantitative variables", "11", f"Methods, {MH[2]}"),
-      ("Statistical methods", "12", f"Methods, {MH[3]}; Supplementary Methods; Table S2"), ("Participants (flow)", "13", "Not applicable (aggregate district data; no exclusions)"),
+      ("Study design", "4", f"Materials and Methods, {MH[0]}"), ("Setting", "5", f"Materials and Methods, {MH[0]}"), ("Participants", "6", f"Materials and Methods, {MH[0]}; {MH[1]} (all women screened; ecological)"),
+      ("Variables", "7", f"Materials and Methods, {MH[1]}; {MH[2]}; Table S1"), ("Data sources/measurement", "8", "Materials and Methods; Supporting Information, Supplementary Methods"),
+      ("Bias", "9", f"Materials and Methods, {MH[3]}; Table S3"), ("Study size", "10", f"Materials and Methods, {MH[0]} (all 229 districts)"), ("Quantitative variables", "11", f"Materials and Methods, {MH[2]}"),
+      ("Statistical methods", "12", f"Materials and Methods, {MH[3]}; Supplementary Methods; Table S2"), ("Participants (flow)", "13", "Not applicable (aggregate district data; no exclusions)"),
       ("Descriptive data", "14", f"Results, {RH[0]}; Table 1"), ("Outcome data", "15", f"Results, {RH[0]}; Table 1; Figure 1"),
       ("Main results", "16", f"Results, {RH[1]}; {RH[2]}; Table 2; Figures 2–3"), ("Other analyses", "17", f"Results, {RH[3]}; {RH[4]}; Tables S2–S4"),
       ("Key results", "18", "Discussion, first paragraph"), ("Limitations", "19", "Discussion, Limitations"), ("Interpretation", "20", "Discussion"), ("Generalizability", "21", "Discussion; Conclusions"),
       ("Other information (funding, code)", "22", "Title page (source of funding; data availability)")]
 K = TX(cite="bracket"); K.para("<b>STROBE checklist</b>"); K.para(f"Manuscript \"{DTITLE}\"")
 K.table_fit("STROBE Checklist for This Ecological Study", ["Item", "No.", "Where reported"], [[a, b, c] for a, b, c in CK], "", fs_max=9, title_bold=True)
-foot_row(K, "STROBE, Strengthening the Reporting of Observational Studies in Epidemiology. Section names refer to the main manuscript and the Supplemental Digital Content.", 8, 12)
+foot_row(K, "STROBE, Strengthening the Reporting of Observational Studies in Epidemiology. Section names refer to the main manuscript and the Supporting Information.", 8, 12)
 pk = os.path.join(OUT, "STROBE_checklist.docx"); K.doc_title = "STROBE checklist"; K.save(pk)
-subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm", "--convert-to", "pdf", "--outdir", OUT, pk], check=True, capture_output=True)
+subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_cxab_esm_cyt", "--convert-to", "pdf", "--outdir", OUT, pk], check=True, capture_output=True)
 print("saved", os.path.basename(pk))
